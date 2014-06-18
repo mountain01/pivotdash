@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pivotdash"  ng-controller="MainController">
+<head>
+	<meta charset="utf-8">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<title>YAAYAYAYAYA</title>
+
+	<!-- Project CSS -->
+
+    <!-- FONT -->
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link href="css/main.css" rel="stylesheet" media="screen">
+	
+    <!-- Bootstrap -->
+
+    <!-- JQUERY CSS -->
+	
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-1">
+				<div class="inline directionArrow"><span class="glyphicon glyphicon-chevron-left"></span></div>
+			</div>
+			<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-4" ng-repeat="year in yearRange">
+						<div class="row">
+							<div class="col-md-6" ng-repeat="part in year">{{part | stripLastLetter}}</div>
+						</div>
+						<div class="row">
+							<div class="col-md-1" ng-repeat="month in months">{{month | MonthCaps}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1">
+				<div class="inline directionArrow pull-right"><span class="glyphicon glyphicon-chevron-right"></span></div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- DIV to replace insert templates into -->
+	<!-- <div ng-view class="mainSection"></div> -->
+
+	<!-- Common Footer -->
+	<!-- Probably do not use in this application -->
+	<footer></footer>
+	<!-- ANGULARJS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.js"></script>
+	<!-- Project JS -->
+	<script src="src/controllers/mainctrl.js"></script>
+	<script src="src/filter.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

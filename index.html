@@ -52,8 +52,8 @@
 		</div>
 	</div>
 		<button class="btn btn-lg btn-warning" ng-click="setupTop()">GOTO TODAY</button>
-		<button class="btn btn-lg btn-warning pull-right" ng-click="gotoDate()">GOTO DATE</button>
-		<input type="text" datepicker="" ng-model="test">
+		<button ng-init="showDatePicker= false" class="btn btn-lg btn-warning pull-right" ng-click="showDatePicker = !showDatePicker">GOTO DATE</button>
+		<input type="text" datepicker="" ng-show="showDatePicker" ng-model="test" class="pull-right" ng-change="gotoDate()">
 
 
 

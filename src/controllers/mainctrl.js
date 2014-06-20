@@ -1,6 +1,7 @@
 function MainController($scope,$filter){
 
 	$scope.today = new Date();
+	$scope.showDatePicker = false;
 	// var year = date.getFullYear();
 	var quarter1 = ["January","February","March"];
 	var quarter2 = ["April","May","June"];
@@ -36,6 +37,7 @@ function MainController($scope,$filter){
 			$scope.yearRange[i-1] = $scope.yearRange[i];
 		}
 		$scope.yearRange[$scope.yearRange.length -1] = temp;
+		$scope.showDatePicker = false;
 	};
 
 	$scope.moveToPast = function(){
@@ -45,6 +47,7 @@ function MainController($scope,$filter){
 			$scope.yearRange[i] = $scope.yearRange[i-1];
 		}
 		$scope.yearRange[0] = temp;
+		$scope.showDatePicker = false;
 	};
 
 	$scope.gotoDate = function(){
@@ -52,6 +55,7 @@ function MainController($scope,$filter){
 		var year = new Date($scope.test).getFullYear();
 		$scope.setupTop(month, year);
 		$scope.moveToPast();
+		// $scope.showDatePicker = false;
 	};
 
 	$scope.setupTop();

@@ -8,7 +8,7 @@ angular.module('pivotdash.directives',[])
 				el.datepicker({
 					changeMonth: true,
 					changeYear: true,
-					yearRange: '-100:+0',
+					yearRange: '-100:+5',
 					dateFormat: 'dd-MM-yy',
 					//minDate: (new Date(1900, 1 - 1, 26)), 
 					// maxDate: (new Date()),

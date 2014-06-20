@@ -1,4 +1,4 @@
-var app = angular.module("pivotdash",[]);
+var app = angular.module("pivotdash.filters",[]);
 
 app.filter("MonthCaps", function (){
 	return function(month){

@@ -18,6 +18,7 @@
     <!-- Bootstrap -->
 
     <!-- JQUERY CSS -->
+	<link href="lib/jquery/jquery-ui.css" rel="stylesheet" media="screen">
 	
 </head>
 <body>
@@ -27,24 +28,32 @@
 			<div class="col-md-1 btn" ng-click="moveToPast()">
 				<div><span class="glyphicon glyphicon-chevron-left"></span></div>
 			</div>
-			<div class="col-md-10">
+			<div class="col-md-10 col-sm-10">
 				<div class="row">
-					<div class="col-md-3" ng-repeat="part in yearRange">
+					<div class="col-md-3 col-sm-3" ng-repeat="part in yearRange">
 						<span ng-show="part.months[0] == 'January' || part.months[0] == 'July'">{{part.year}}</span>
 						<br ng-hide="part.months[0] == 'January' || part.months[0] == 'July'">
 						<div class="row">
-							<div class="col-md-4" ng-repeat="month in part.months">
+							<div class="col-md-4 col-sm-4" ng-repeat="month in part.months">
 								{{month}}
+								<div class="row">
+									<div class="col-md-12">
+										<span ng-show="determineToday(month, part.year)">{{today | date:'MMMM d'}}</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-1 btn" ng-click="moveToFuture()">
+			<div class="col-md-1 col-sm-1 btn" ng-click="moveToFuture()">
 				<div<span class="glyphicon glyphicon-chevron-right"></span></div>
 			</div>
 		</div>
 	</div>
+		<button class="btn btn-lg btn-warning" ng-click="setupTop()">GOTO TODAY</button>
+		<button class="btn btn-lg btn-warning pull-right" ng-click="gotoDate()">GOTO DATE</button>
+		<input type="text" datepicker="" ng-model="test">
 
 
 
@@ -56,12 +65,17 @@
 	<!-- Common Footer -->
 	<!-- Probably do not use in this application -->
 	<footer></footer>
+	<!-- JQUERY -->
+	<script src="lib/jquery1.9.1.min.js"></script>
+	<script src="lib/jquery-ui-1.10.3.custom.min.js"></script>
 	<!-- ANGULARJS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.js"></script>
 	<!-- Project JS -->
 	<script src="src/controllers/mainctrl.js"></script>
 	<script src="src/filter.js"></script>
+	<script src="src/directive.js"></script>
+	<script src="src/pivotdash.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>

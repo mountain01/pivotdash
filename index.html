@@ -38,7 +38,8 @@
 								{{month}}
 								<div class="row">
 									<div class="col-md-12">
-										<span ng-show="determineToday(month, part.year)">{{today | date:'MMMM d'}}</span>
+										<span ng-show="determineToday(month, part.year)">{{today | date:'MMMM d'}}<br></span>
+										<span ng-show="determineDate(month, part.year)">{{dateToDisplay | date:'MMMM d'}}</span>
 									</div>
 								</div>
 							</div>
@@ -51,10 +52,27 @@
 			</div>
 		</div>
 	</div>
-		<button class="btn btn-lg btn-warning" ng-click="setupTop()">GOTO TODAY</button>
-		<button ng-init="showDatePicker= false" class="btn btn-lg btn-warning pull-right" ng-click="showDatePicker = !showDatePicker">GOTO DATE</button>
-		<input type="text" datepicker="" ng-show="showDatePicker" ng-model="test" class="pull-right" ng-change="gotoDate()">
+	<button class="btn btn-lg btn-warning" ng-click="setupTop()">GOTO TODAY</button>
+	<button ng-init="showDatePicker= false" class="btn btn-lg btn-warning pull-right" ng-click="showDatePicker = !showDatePicker">GOTO DATE</button>
+	<input type="text" datepicker="" ng-show="showDatePicker" ng-model="selectedDate" class="pull-right" ng-change="gotoDate()">
 
+	<br>
+	<br>
+	<br>
+
+	<div class="container-fluid">
+		<div class="row" ng-repeat="project in currentProjects">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="well" ng-class="getClass(project)">
+						<div class="row">
+							<div class="col-md-4 text-center" ng-repeat="part in project">{{part | date:'MMMM d, yyyy'}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 

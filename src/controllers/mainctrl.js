@@ -8,7 +8,7 @@ function MainController($scope,$filter){
 	var quarter3 = ["July","August","September"];
 	var quarter4 = ["October","November","December"];
 
-	$scope.setupTop = function(month,year){
+	$scope.setupTop = function(month,year,gotoDate){
 		var month = month || new Date().getMonth();
 		var year = year || new Date().getFullYear();
 		$scope.yearRange = [];
@@ -27,6 +27,10 @@ function MainController($scope,$filter){
 		} else if (month > 8) {
 			$scope.moveToFuture();
 			$scope.moveToFuture();
+		}
+		if (angular.isUndefined(gotoDate)){
+			$scope.selectedDate = "";
+			$scope.dateToDisplay = "";
 		}
 	};
 
@@ -51,10 +55,11 @@ function MainController($scope,$filter){
 	};
 
 	$scope.gotoDate = function(){
-		var month = new Date($scope.test).getMonth();
-		var year = new Date($scope.test).getFullYear();
-		$scope.setupTop(month, year);
+		var month = new Date($scope.selectedDate).getMonth();
+		var year = new Date($scope.selectedDate).getFullYear();
+		$scope.setupTop(month, year, true);
 		$scope.moveToPast();
+		$scope.dateToDisplay = new Date($scope.selectedDate);
 		// $scope.showDatePicker = false;
 	};
 
@@ -72,5 +77,76 @@ function MainController($scope,$filter){
 		}
 		return true;
 	};
+
+	$scope.determineDate = function (month, year){
+		var myDate = new Date($scope.selectedDate);
+		var myYear = myDate.getFullYear();
+		var myMonth = $filter("date")(myDate,"MMMM");
+
+		if (year != myYear){
+			return false;
+		}
+		if (month != myMonth){
+			return false
+		}
+		return true;
+
+	};
+
+	function SetDate(type){
+		var year = new Date();
+		year.setMonth(0);
+		switch (type){
+			case 1:
+				year.setDate(1);
+				return year.getTime();
+			case 2:
+				year.setFullYear(year.getFullYear() + 1);
+				year.setDate(0);
+				return year.getTime();
+		}
+	}
+
+	function makeDummyProjects () {
+		var projectNames = ["Pivot","Volunteer Manaager","Reading Tutors","Missionary Internet Use","TRC","TALL"];
+		$scope.currentProjects = [];
+		for (var i = 0; i < 3; i++){
+			var firstOfYear = SetDate(1);
+			var endOfYear = SetDate(2);
+			var randStart = Math.floor((Math.random() * (endOfYear - firstOfYear)) + firstOfYear);
+			var randEnd = Math.floor((Math.random() * (endOfYear - randStart)) + randStart);
+			var randIndex = Math.floor(Math.random() * projectNames.length);
+			var project = {
+				"bprojectName":projectNames[randIndex],
+				"astartDate":new Date(randStart),
+				"cendDate":new Date(randEnd)
+			};
+			projectNames.splice(randIndex,1);
+			$scope.currentProjects.push(project);
+		}
+	}
+
+	makeDummyProjects();
+
+	$scope.getClass = function(project) {
+		var month = $filter("date")(project.astartDate, "MMMM");
+		var offset = 0;
+		var breakout = false;
+		var returnClass = "col-md-";
+		var monthDiff = project.cendDate.getMonth() - project.astartDate.getMonth();
+		returnClass = returnClass.concat(monthDiff +1);
+		for (var i = 0;i < $scope.yearRange.length;i++){
+			var index = $scope.yearRange[i].months.indexOf(month);
+			if (index != -1){
+				offset+=index;
+				break;
+			}
+			offset+=3;
+		}
+		if(offset > 0){
+			returnClass = returnClass.concat(" col-md-offset-" + offset);
+		}
+		return returnClass;
+	}
 
 }

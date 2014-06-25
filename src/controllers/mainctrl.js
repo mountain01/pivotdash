@@ -101,7 +101,7 @@ function MainController($scope,$filter){
 				year.setDate(1);
 				return year.getTime();
 			case 2:
-				year.setFullYear(year.getFullYear() + 1);
+				year.setFullYear(year.getFullYear() + 2);
 				year.setDate(0);
 				return year.getTime();
 		}
@@ -169,6 +169,9 @@ function MainController($scope,$filter){
 		years.push($scope.yearRange[3].year);
 		//normal width
 		monthDiff = project.cendDate.getMonth() - project.astartDate.getMonth();
+		if(project.cendDate.getFullYear() != project.astartDate.getFullYear()){
+			monthDiff += 12;
+		}
 		//normal offset
 		for (var i = 0;i < $scope.yearRange.length;i++){
 			var index = $scope.yearRange[i].months.indexOf(startInfo[0]);
@@ -211,15 +214,22 @@ function MainController($scope,$filter){
 	$scope.isViewable = function(project){
 		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
 		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
-		for (var quarter in $scope.yearRange){
-			quarter = $scope.yearRange[quarter];
-			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year.toString() == startInfo[1]){
-				return true
+
+		if((startInfo[1] <= $scope.yearRange[3].year.toString() && $scope.yearRange[3].year.toString() <= endInfo[1]) || 
+			(startInfo[1] <= $scope.yearRange[0].year.toString() && $scope.yearRange[0].year.toString() <= endInfo[1])){
+			for (var quarter in $scope.yearRange){
+				quarter = $scope.yearRange[quarter];
+				if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year.toString() == startInfo[1]){
+					return true
+				}
+				if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year.toString() == endInfo[1]){
+					return true
+				}
 			}
-			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year.toString() == endInfo[1]){
-				return true
-			}
+			
 		}
+
+
 		return false;
 	};
 

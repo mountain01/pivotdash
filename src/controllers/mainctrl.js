@@ -128,35 +128,48 @@ function MainController($scope,$filter){
 
 	makeDummyProjects();
 
+	function rightOverflow (project,endInfo) {
+		// body...
+		var diff = 0;
+		for (var quarter in $scope.yearRange){
+			quarter = $scope.yearRange[quarter];
+			var index = quarter.months.indexOf(endInfo[0]);
+			if (index != -1){
+				diff+=(index+1);
+				break;
+			}
+			diff+=3;
+		};
+		return diff;
+	}
+
+	function leftOverflow (project,startInfo) {
+		// body...
+		var monthDiff = 0;
+		for (var i = $scope.yearRange.length-1;i >= 0;i--){
+			var index = $scope.yearRange[i].months.indexOf(startInfo[0]);
+			if (index != -1){
+				monthDiff+=(3-index);
+				//0=3,1=2,2=1
+				break;
+			}
+			monthDiff+=3;
+		}
+		return monthDiff;
+	}
+
 	$scope.getClass = function(project) {
 		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
 		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
 		var offset = 0;
-		var returnClass = "col-sm-";
+		var returnClass = "col-xs-";
 		var monthDiff;
 		var years = [];
 		years.push($scope.yearRange[0].year);
 		years.push($scope.yearRange[3].year);
+		//normal width
 		monthDiff = project.cendDate.getMonth() - project.astartDate.getMonth();
-
-		for (var quarter in $scope.yearRange){
-			quarter = $scope.yearRange[quarter];
-			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year != endInfo[1]){
-				if(startInfo[1] <= Math.max(years[0],years[1])){
-					console.log(project.bprojectName + " overflows on the right");
-					break;
-				}
-			}
-			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year != startInfo[1]){
-				if(endInfo[1] <= Math.min(years[0],years[1])){
-					console.log(project.bprojectName + " overflows on the left");
-					break;
-				}
-			}
-		}
-				// console.log(project.bprojectName + " overflows on the left");
-
-
+		//normal offset
 		for (var i = 0;i < $scope.yearRange.length;i++){
 			var index = $scope.yearRange[i].months.indexOf(startInfo[0]);
 			if (index != -1){
@@ -165,13 +178,49 @@ function MainController($scope,$filter){
 			}
 			offset+=3;
 		}
+		//change for overflow
+		for (var quarter in $scope.yearRange){
+			quarter = $scope.yearRange[quarter];
+			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year != endInfo[1]){
+				if(startInfo[1] <= Math.max(years[0],years[1])){
+					monthDiff -= rightOverflow(project,endInfo);
+					break;
+				}
+			}
+			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year != startInfo[1]){
+				if(endInfo[1] <= Math.min(years[0],years[1])){
+					monthDiff -= leftOverflow(project,startInfo);
+					offset = 0;
+					break;
+				}
+			}
+		}
+
+
 
 		//set up classes for object
-		returnClass = returnClass.concat(monthDiff +1);
+		if(monthDiff >=0){
+			returnClass = returnClass.concat(monthDiff +1);
+		}
 		if(offset > 0){
-			returnClass = returnClass.concat(" col-sm-offset-" + offset);
+			returnClass = returnClass.concat(" col-xs-offset-" + offset);
 		}
 		return returnClass;
 	}
+
+	$scope.isViewable = function(project){
+		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
+		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
+		for (var quarter in $scope.yearRange){
+			quarter = $scope.yearRange[quarter];
+			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year.toString() == startInfo[1]){
+				return true
+			}
+			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year.toString() == endInfo[1]){
+				return true
+			}
+		}
+		return false;
+	};
 
 }

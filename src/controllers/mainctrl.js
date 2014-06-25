@@ -110,7 +110,7 @@ function MainController($scope,$filter){
 	function makeDummyProjects () {
 		var projectNames = ["Pivot","Volunteer Manaager","Reading Tutors","Missionary Internet Use","TRC","TALL"];
 		$scope.currentProjects = [];
-		for (var i = 0; i < 3; i++){
+		for (var i = 0; i < projectNames.length;i++){
 			var firstOfYear = SetDate(1);
 			var endOfYear = SetDate(2);
 			var randStart = Math.floor((Math.random() * (endOfYear - firstOfYear)) + firstOfYear);
@@ -129,20 +129,45 @@ function MainController($scope,$filter){
 	makeDummyProjects();
 
 	$scope.getClass = function(project) {
-		var month = $filter("date")(project.astartDate, "MMMM");
+		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
+		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
 		var offset = 0;
-		var breakout = false;
 		var returnClass = "col-md-";
-		var monthDiff = project.cendDate.getMonth() - project.astartDate.getMonth();
-		returnClass = returnClass.concat(monthDiff +1);
+		var monthDiff;
+		var years = [];
+		years.push($scope.yearRange[0].year);
+		years.push($scope.yearRange[3].year);
+		monthDiff = project.cendDate.getMonth() - project.astartDate.getMonth();
+
+		for (var quarter in $scope.yearRange){
+			quarter = $scope.yearRange[quarter];
+			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year != endInfo[1]){
+				if(startInfo[1] <= Math.max(years[0],years[1])){
+					console.log(project.bprojectName + " overflows on the right");
+					break;
+				}
+			}
+			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year != startInfo[1]){
+				if(endInfo[1] <= Math.min(years[0],years[1])){
+					console.log(project.bprojectName + " overflows on the left");
+					break;
+				}
+			}
+		}
+				// console.log(project.bprojectName + " overflows on the left");
+
+
 		for (var i = 0;i < $scope.yearRange.length;i++){
-			var index = $scope.yearRange[i].months.indexOf(month);
+			var index = $scope.yearRange[i].months.indexOf(startInfo[0]);
 			if (index != -1){
 				offset+=index;
 				break;
 			}
 			offset+=3;
 		}
+
+		//set up classes for object
+		returnClass = returnClass.concat(monthDiff +1);
 		if(offset > 0){
 			returnClass = returnClass.concat(" col-md-offset-" + offset);
 		}

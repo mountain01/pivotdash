@@ -132,7 +132,7 @@ function MainController($scope,$filter){
 		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
 		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
 		var offset = 0;
-		var returnClass = "col-md-";
+		var returnClass = "col-sm-";
 		var monthDiff;
 		var years = [];
 		years.push($scope.yearRange[0].year);
@@ -169,7 +169,7 @@ function MainController($scope,$filter){
 		//set up classes for object
 		returnClass = returnClass.concat(monthDiff +1);
 		if(offset > 0){
-			returnClass = returnClass.concat(" col-md-offset-" + offset);
+			returnClass = returnClass.concat(" col-sm-offset-" + offset);
 		}
 		return returnClass;
 	}

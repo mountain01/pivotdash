@@ -184,14 +184,14 @@ function MainController($scope,$filter){
 		//change for overflow
 		for (var quarter in $scope.yearRange){
 			quarter = $scope.yearRange[quarter];
-			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year != endInfo[1]){
-				if(startInfo[1] <= Math.max(years[0],years[1])){
+			if(!!~quarter.months.indexOf(endInfo[0]) && quarter.year.toString() != endInfo[1]){
+				if(parseInt(startInfo[1]) <= Math.max(years[0],years[1])){
 					monthDiff -= rightOverflow(project,endInfo);
 					break;
 				}
 			}
-			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year != startInfo[1]){
-				if(endInfo[1] <= Math.min(years[0],years[1])){
+			if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year.toString() != startInfo[1]){
+				if(parseInt(endInfo[1]) <= Math.min(years[0],years[1])){
 					monthDiff -= leftOverflow(project,startInfo);
 					offset = 0;
 					break;
@@ -215,8 +215,8 @@ function MainController($scope,$filter){
 		var startInfo = ($filter("date")(project.astartDate, "MMMM,yyyy")).split(",");
 		var endInfo = ($filter("date")(project.cendDate, "MMMM,yyyy")).split(",");
 
-		if((startInfo[1] <= $scope.yearRange[3].year.toString() && $scope.yearRange[3].year.toString() <= endInfo[1]) || 
-			(startInfo[1] <= $scope.yearRange[0].year.toString() && $scope.yearRange[0].year.toString() <= endInfo[1])){
+		if((parseInt(startInfo[1]) <= $scope.yearRange[3].year && $scope.yearRange[3].year <= parseInt(endInfo[1])) || 
+			(parseInt(startInfo[1]) <= $scope.yearRange[0].year && $scope.yearRange[0].year <= parseInt(endInfo[1]))){
 			for (var quarter in $scope.yearRange){
 				quarter = $scope.yearRange[quarter];
 				if(!!~quarter.months.indexOf(startInfo[0]) && quarter.year.toString() == startInfo[1]){

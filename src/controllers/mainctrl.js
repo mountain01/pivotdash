@@ -193,6 +193,10 @@ function MainController($scope,$filter){
 			angular.forEach($scope.yearRange, function(q){
 				if (q.months.indexOf(startInfo[0]) != -1 && parseInt(startInfo[1]) <= q.year){
 					monthDiff -= rightOverflow(project,endInfo);
+					if(q.year != parseInt(startInfo[1])){
+						monthDiff = 12;
+						offset = 0;
+					}
 					alreadyFound = true;
 				}
 			});
@@ -204,6 +208,13 @@ function MainController($scope,$filter){
 				if (q.months.indexOf(endInfo[0]) != -1 && parseInt(endInfo[1]) >= q.year){
 					monthDiff -= leftOverflow(project,startInfo);
 					monthDiff += monthDiff < 0 ? 12:0;
+					if(parseInt(endInfo[1]) != q.year){
+						if(monthDiff == 0){
+							monthDiff +=12;	
+						} else {
+							monthDiff = 12;
+						}
+					}
 					offset = 0;
 					alreadyFound = true;
 				}
